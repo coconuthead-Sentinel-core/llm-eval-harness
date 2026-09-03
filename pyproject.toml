@@ -9,7 +9,7 @@ description = "Structured evaluation framework for LLM outputs — datasets, pro
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
-authors = [{ name = "Shannon Brian Kelly" }]
+authors = [{ name = "Shannon Brian Kelley" }]
 keywords = ["llm", "evaluation", "eval-harness", "llm-as-judge", "rubric", "grader"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
