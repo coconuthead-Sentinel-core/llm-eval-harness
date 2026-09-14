@@ -1,5 +1,5 @@
 """Tests for Dataset and JsonlDataset."""
-from llm_eval import Dataset, JsonlDataset, EvalCase
+from llm_eval import Dataset, EvalCase, JsonlDataset
 
 
 class TestDataset:

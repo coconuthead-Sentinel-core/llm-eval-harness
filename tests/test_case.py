@@ -1,7 +1,7 @@
 """Tests for EvalCase, ModelOutput, GraderResult."""
 import pytest
 
-from llm_eval import EvalCase, ModelOutput, GraderResult
+from llm_eval import EvalCase, GraderResult
 
 
 class TestEvalCase:

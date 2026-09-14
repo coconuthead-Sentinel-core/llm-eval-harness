@@ -1,6 +1,6 @@
 """Model runners."""
 from .base import ModelRunner
-from .echo import EchoRunner
 from .callable_runner import CallableRunner
+from .echo import EchoRunner
 
 __all__ = ["ModelRunner", "EchoRunner", "CallableRunner"]

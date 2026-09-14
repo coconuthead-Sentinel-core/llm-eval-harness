@@ -1,5 +1,5 @@
 """Tests for ScoreAggregator and EvalReport."""
-from llm_eval import ScoreAggregator, EvalReport, GraderResult, ModelOutput
+from llm_eval import GraderResult, ScoreAggregator
 
 
 def _r(case, model, grader, score, passed):

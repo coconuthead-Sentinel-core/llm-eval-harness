@@ -1,20 +1,18 @@
-# LLM Evaluation Harness v1.0
+# LLM Evaluation Harness
 
 > **Structured LLM evaluation. Datasets × prompts × runners × graders → report.**
-> Five-grader battery (exact, regex, contains, semantic, LLM-as-judge),
+> Five-grader battery (exact, regex, contains, Jaccard-similarity, LLM-as-judge),
 > multi-model dispatch, JSONL datasets, no external API keys to run.
 
-![Status](https://img.shields.io/badge/status-public-success)
+![CI](https://github.com/coconuthead-Sentinel-core/llm-eval-harness/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
-![Tests](https://img.shields.io/badge/tests-pytest-blue)
 
 ---
 
 ## What this is
 
-The canonical reference implementation of the standard LLM evaluation
-flow:
+A reference implementation of the standard LLM evaluation flow:
 
 ```
 Dataset (golden cases)
@@ -33,10 +31,10 @@ Dataset (golden cases)
                        (overall + per-model + per-grader)
 ```
 
-Five pluggable protocols ship with dependency-free reference backends.
-The package runs end-to-end on a fresh machine **with no external API
-keys**. Real adapters (OpenAI / Anthropic / local llama.cpp) plug into
-the same `ModelRunner` protocol.
+Five built-in graders and two pluggable interfaces (`Grader`, `ModelRunner`)
+ship with dependency-free reference backends. The package runs end-to-end on a
+fresh machine **with no external API keys**. Real adapters (OpenAI / Anthropic
+/ local llama.cpp) plug into the same `ModelRunner` protocol.
 
 ## Install
 
@@ -99,7 +97,7 @@ report = EvalHarness(
 | `ExactMatchGrader`        | Strict equality (normalized) | Single-token answers, known-good labels |
 | `RegexGrader`             | Pattern match in output | Output should contain a date/number/format |
 | `ContainsGrader`          | Substring set match (all/any) | Output should mention specific terms |
-| `SemanticSimilarityGrader`| Jaccard token-set similarity | Open-ended answers, prose grading |
+| `JaccardSimilarityGrader` | Jaccard token-set similarity (lexical proxy for semantic match) | Open-ended answers, prose grading |
 | `LLMJudgeGrader`          | Wraps another model as judge | Rubric-based grading of unstructured text |
 
 `LLMJudgeGrader` accepts any `ModelRunner` as the judge — you can use a
@@ -147,17 +145,16 @@ LLM Evaluation Harness/
 │       ├── exact.py           ← ExactMatchGrader
 │       ├── regex.py           ← RegexGrader
 │       ├── contains.py        ← ContainsGrader
-│       ├── semantic.py        ← SemanticSimilarityGrader
+│       ├── jaccard.py         ← JaccardSimilarityGrader
 │       └── llm_judge.py       ← LLMJudgeGrader
-├── tests/
-│   ├── test_case.py
-│   ├── test_dataset.py
-│   ├── test_prompt.py
-│   ├── test_runners.py
-│   ├── test_graders.py
-│   ├── test_aggregator.py
-│   └── test_harness.py
-└── docs/
+└── tests/
+    ├── test_case.py
+    ├── test_dataset.py
+    ├── test_prompt.py
+    ├── test_runners.py
+    ├── test_graders.py
+    ├── test_aggregator.py
+    └── test_harness.py
 ```
 
 ## License
@@ -166,8 +163,6 @@ MIT — see [`LICENSE`](LICENSE).
 
 ## Author
 
-**Shannon Brian Kelley** — AI Orchestrator Architect.
-Co-authored with Claude AI (Anthropic) under file-system-bound persona
-protocol; co-creator role: **"Archivist of Wisdom"**.
-
-Canon entry **#25** in the architect's portfolio.
+**Shannon Brian Kelley** — architecture, specification, and review.
+Implementation co-developed with Claude (Anthropic) as a coding
+assistant, working under Shannon's direction.

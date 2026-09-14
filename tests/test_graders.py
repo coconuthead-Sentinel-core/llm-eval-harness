@@ -2,10 +2,16 @@
 import pytest
 
 from llm_eval import (
-    EvalCase, ModelOutput, Grader,
-    ExactMatchGrader, RegexGrader, ContainsGrader,
-    SemanticSimilarityGrader, LLMJudgeGrader,
-    EchoRunner, CallableRunner,
+    CallableRunner,
+    ContainsGrader,
+    EchoRunner,
+    EvalCase,
+    ExactMatchGrader,
+    Grader,
+    JaccardSimilarityGrader,
+    LLMJudgeGrader,
+    ModelOutput,
+    RegexGrader,
 )
 
 
@@ -88,26 +94,42 @@ class TestContainsGrader:
             ContainsGrader(["x"], mode="some")
 
 
-class TestSemanticSimilarityGrader:
+class TestJaccardSimilarityGrader:
     def test_protocol(self):
-        assert isinstance(SemanticSimilarityGrader(), Grader)
+        assert isinstance(JaccardSimilarityGrader(), Grader)
 
     def test_identical_text_perfect_score(self):
-        g = SemanticSimilarityGrader()
+        g = JaccardSimilarityGrader()
         r = g.grade(_case("python is a programming language"),
                     _output("python is a programming language"))
-        assert r.score >= 0.9
+        assert r.score == 1.0
 
-    def test_orthogonal_text_low_score(self):
-        g = SemanticSimilarityGrader(threshold=0.5)
+    def test_orthogonal_text_zero_overlap(self):
+        g = JaccardSimilarityGrader(threshold=0.5)
         r = g.grade(_case("python programming language"),
-                    _output("the cat sat on the mat colorful blanket"))
-        assert r.score < 0.3
+                    _output("cat sat mat colorful blanket"))
+        assert r.score == 0.0
         assert not r.passed
+
+    def test_partial_overlap(self):
+        g = JaccardSimilarityGrader()
+        r = g.grade(_case("python programming language"),
+                    _output("python is great for scripting"))
+        assert r.score == pytest.approx(1 / 5)
+
+    def test_both_empty_scores_one(self):
+        g = JaccardSimilarityGrader()
+        r = g.grade(_case(""), _output(""))
+        assert r.score == 1.0
+
+    def test_one_empty_scores_zero(self):
+        g = JaccardSimilarityGrader()
+        r = g.grade(_case("hello world"), _output(""))
+        assert r.score == 0.0
 
     def test_threshold_validation(self):
         with pytest.raises(ValueError):
-            SemanticSimilarityGrader(threshold=1.5)
+            JaccardSimilarityGrader(threshold=1.5)
 
 
 class TestLLMJudgeGrader:

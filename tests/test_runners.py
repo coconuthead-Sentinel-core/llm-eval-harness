@@ -1,7 +1,7 @@
 """Tests for ModelRunner implementations."""
 import pytest
 
-from llm_eval import ModelRunner, EchoRunner, CallableRunner
+from llm_eval import CallableRunner, EchoRunner, ModelRunner
 
 
 class TestEchoRunner:
