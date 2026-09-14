@@ -3,10 +3,9 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from typing import Iterable
 
 from .aggregator import EvalReport, ScoreAggregator
-from .case import EvalCase, GraderResult, ModelOutput
+from .case import GraderResult, ModelOutput
 from .dataset import Dataset
 from .graders.base import Grader
 from .prompt import PromptTemplate

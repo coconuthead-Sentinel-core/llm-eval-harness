@@ -2,10 +2,8 @@
 from __future__ import annotations
 
 import re
-import string
 from dataclasses import dataclass
 from typing import Any
-
 
 _PLACEHOLDER_RE = re.compile(r"\{([A-Za-z_][A-Za-z0-9_]*)\}")
 

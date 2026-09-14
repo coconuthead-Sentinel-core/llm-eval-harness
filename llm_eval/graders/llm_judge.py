@@ -11,11 +11,9 @@ constructor argument.
 from __future__ import annotations
 
 import re
-from typing import Any
 
 from ..case import EvalCase, GraderResult, ModelOutput
 from ..runners.base import ModelRunner
-
 
 _DEFAULT_PROMPT = (
     "You are an evaluation judge.\n\n"

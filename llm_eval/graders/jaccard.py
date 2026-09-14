@@ -1,15 +1,15 @@
-"""SemanticSimilarityGrader — token-overlap based proxy for semantic
-similarity. Real production stacks plug in sentence-transformers or an
-embedding model via the same `name`/`grade` contract.
+"""JaccardSimilarityGrader — lexical token-overlap similarity.
 
 Score = Jaccard similarity over the cleaned token sets, in [0, 1].
+This is a lexical metric, not a semantic one; real semantic-similarity
+stacks plug in sentence-transformers or an embedding model via the same
+`name`/`grade` contract.
 """
 from __future__ import annotations
 
 import re
 
 from ..case import EvalCase, GraderResult, ModelOutput
-
 
 _STOPWORDS = {
     "the", "a", "an", "and", "or", "but", "if", "in", "on", "at", "of", "to",
@@ -28,9 +28,9 @@ def _toks(s: str) -> set[str]:
     return out
 
 
-class SemanticSimilarityGrader:
+class JaccardSimilarityGrader:
     """Jaccard token-set similarity with a configurable pass threshold."""
-    name = "semantic_similarity"
+    name = "jaccard_similarity"
 
     def __init__(self, *, threshold: float = 0.5):
         if not 0.0 <= threshold <= 1.0:
